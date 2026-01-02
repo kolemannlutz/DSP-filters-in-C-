@@ -1,0 +1,32 @@
+#include <iostream>
+#include <memory>
+#include "filter_common.h"
+#include "filter_includes.h"
+
+int main() {
+    std::unique_ptr<SO_LPF> filter (new SO_LPF);
+
+    auto coeffs = filter->calculate_coeffs(1.0, 5000, 96000);
+    auto yn = filter->process(0.303);
+
+    std::cout << "Coeffs: " << std::endl;
+    std::cout << "a0: " << coeffs.a0 << std::endl;
+    std::cout << "a1: " << coeffs.a1 << std::endl;
+    std::cout << "a2: " << coeffs.a2 << std::endl;
+    std::cout << "b1: " << coeffs.b1 << std::endl;
+    std::cout << "b2: " << coeffs.b2 << std::endl;
+
+    std::cout << "yn: " << yn << std::endl;
+    return 0;
+}
+#____________________________________________________________
+
+#Now to build the file run:
+#g++ main.cpp -I./lib
+
+#run the executable:
+#./a.out
+#This is will print the filter coefficients and then will process a sample with the value 0.303. You should see an output similar to this:
+#i.e. Coeffs: a0: 0.0228608 a1: 0.0457215 a2: 0.0228608 b1: -1.63163 b2: 0.723069 yn: 0.00692681
+#or On Linux, you can just run this:./build_tests.sh
+#https://github.com/dimtass/DSP-Cpp-filters
